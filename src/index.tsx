@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
-import StoreProvider from './context';
+import { RecoilRoot } from 'recoil';
 
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider>
+    <RecoilRoot>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </StoreProvider>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );
