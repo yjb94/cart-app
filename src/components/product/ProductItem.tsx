@@ -16,7 +16,7 @@ const ProductItem: React.FC<{ product: ProductType }> = ({
   }
   //TODO: styling
 
-  const isInCart = cartItems.indexOf(product) !== -1;
+  const isInCart = !!cartItems.find(t => t.id === product.id);
 
   return (
     <Container>
