@@ -1,5 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { cartItemsState, cartPriceState } from '../stores/cart';
+import { useEffect } from 'react';
 
 export const MAX_ITEM_COUNT = 3;
 export const MIN_QUANTITY = 1;
@@ -7,6 +8,11 @@ export const MIN_QUANTITY = 1;
 const useCart = () => {
   const [cartItems, setCartItems] = useRecoilState<CartItemType[]>(cartItemsState);
   const [price, setPrice] = useRecoilState<number>(cartPriceState);
+
+  useEffect(() => {
+    const newPrice = cartItems.filter(t => t.selected).map(t => t.price * (t.quantity || MIN_QUANTITY)).reduce((a, b) => a + b, 0);
+    setPrice(newPrice);
+  }, [cartItems])
 
   const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
@@ -39,7 +45,6 @@ const useCart = () => {
         return cartItem;
       }
     });
-    setPrice(price + (selected ? newItem.price : -newItem.price));
     setCartItems(newCartItems);
   }
 
@@ -52,14 +57,14 @@ const useCart = () => {
   }
 
   const setQuantity = (newItem: CartItemType, isAdd: boolean) => {
-    if(!newItem.selected) 
+    if (!newItem.selected)
       return;
-    
+
     const newQuantity: number = (newItem.quantity || 0) + (isAdd ? 1 : -1);
 
-    if(newQuantity <= 0)
+    if (newQuantity <= 0)
       return;
-    
+
     const newCartItems = cartItems.map(cartItem =>
       cartItem.id === newItem.id ?
         {
@@ -69,7 +74,6 @@ const useCart = () => {
         :
         cartItem
     );
-    setPrice(price + (isAdd ? newItem.price : -newItem.price));
     setCartItems(newCartItems);
   }
   const addQuantity = (item: CartItemType) => {

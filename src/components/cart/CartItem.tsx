@@ -41,19 +41,23 @@ const CartItem: React.FC<{ cartItem: CartItemType }> = ({
       <Price>
         {numberToPrice(cartItem.price)}
       </Price>
-      <Quantity>
-        {cartItem.quantity}개
-      </Quantity>
-      <Button
-        onClick={onClickAdd}
-      >
-        +
-      </Button>
-      <Button
-        onClick={onClickSubstract}
-      >
-        -
-      </Button>
+      {cartItem.selected &&
+        <QuantityContainer>
+          <Quantity>
+            {cartItem.quantity}개
+          </Quantity>
+          <Button
+            onClick={onClickAdd}
+          >
+            +
+          </Button>
+          <Button
+            onClick={onClickSubstract}
+          >
+            -
+          </Button>
+        </QuantityContainer>
+      }
     </Container>
   )
 };
@@ -66,12 +70,14 @@ const Title = styled.div`
 `;
 const Price = styled.div`
 `;
-const Quantity = styled.div`
-`;
 const Image = styled.img`
   width: 490px;
 `;
 
+const QuantityContainer = styled.div`
+`;
+const Quantity = styled.div`
+`;
 const Button = styled.button`
 `;
 
