@@ -12,7 +12,7 @@ const useCart = () => {
   useEffect(() => {
     const newPrice = cartItems.filter(t => t.selected).map(t => t.price * (t.quantity || MIN_QUANTITY)).reduce((a, b) => a + b, 0);
     setPrice(newPrice);
-  }, [cartItems])
+  }, [cartItems, setPrice])
 
   const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
