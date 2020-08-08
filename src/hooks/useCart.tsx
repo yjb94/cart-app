@@ -1,10 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { cartItemsState } from '../stores/cart';
+import { cartItemsState, cartSelectedItemsState, cartPriceState } from '../stores/cart';
 
 export const MAX_ITEM_COUNT = 3;
 
 const useCart = () => {
-  const [cartItems, setCartItems] = useRecoilState(cartItemsState);
+  const [cartItems, setCartItems] = useRecoilState<CartItemType[]>(cartItemsState);
+  const [selectedItems, setSelectedItems] = useRecoilState<CartItemType[]>(cartSelectedItemsState);
+  const [price, setPrice] = useRecoilState<number>(cartPriceState);
 
   const addItem = (item: CartItemType
   ) => {
@@ -25,13 +27,20 @@ const useCart = () => {
     setCartItems(cartItems.filter(t => t.id !== item.id));
   }
 
-  const selectItemWithState = (item: CartItemType, selected: boolean) => {
-    const newCartItems = cartItems.map(t => {
-      return t.id === item.id ? {
-        ...item,
-        selected
-      } : item
-    })
+  const selectItemWithState = (newItem: CartItemType, selected: boolean) => {
+    const newCartItems = cartItems.map(cartItem => {
+      const isSelectingItem = cartItem.id === newItem.id;
+      if(isSelectingItem) {
+        return {
+          ...cartItem,
+          selected
+        }
+      } else {
+        return cartItem;
+      }
+    });
+    setPrice(price + (selected ? newItem.price : -newItem.price));
+    setSelectedItems(newCartItems.filter(t => t.selected));
     setCartItems(newCartItems);
   }
 
@@ -43,7 +52,7 @@ const useCart = () => {
     selectItemWithState(item, false);
   }
 
-  return { cartItems, addItem, removeItem, selectItem, deselectItem }
+  return { cartItems, selectedItems, price, addItem, removeItem, selectItem, deselectItem }
 };
 
 export default useCart;
