@@ -1,26 +1,26 @@
 import { useRecoilState } from 'recoil';
-import { cartItemsState, cartSelectedItemsState, cartPriceState } from '../stores/cart';
+import { cartItemsState, cartPriceState } from '../stores/cart';
 
 export const MAX_ITEM_COUNT = 3;
+export const MIN_QUANTITY = 1;
 
 const useCart = () => {
   const [cartItems, setCartItems] = useRecoilState<CartItemType[]>(cartItemsState);
-  const [selectedItems, setSelectedItems] = useRecoilState<CartItemType[]>(cartSelectedItemsState);
   const [price, setPrice] = useRecoilState<number>(cartPriceState);
 
-  const addItem = (item: CartItemType
-  ) => {
+  const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
       //TODO: error handling
       return;
     }
 
-    const newCartItems = [
+    setCartItems([
       ...cartItems,
-      item,
-    ];
-
-    setCartItems(newCartItems);
+      {
+        ...item,
+        quantity: MIN_QUANTITY
+      },
+    ]);
   }
 
   const removeItem = (item: CartItemType) => {
@@ -30,7 +30,7 @@ const useCart = () => {
   const selectItemWithState = (newItem: CartItemType, selected: boolean) => {
     const newCartItems = cartItems.map(cartItem => {
       const isSelectingItem = cartItem.id === newItem.id;
-      if(isSelectingItem) {
+      if (isSelectingItem) {
         return {
           ...cartItem,
           selected
@@ -40,7 +40,6 @@ const useCart = () => {
       }
     });
     setPrice(price + (selected ? newItem.price : -newItem.price));
-    setSelectedItems(newCartItems.filter(t => t.selected));
     setCartItems(newCartItems);
   }
 
@@ -52,7 +51,44 @@ const useCart = () => {
     selectItemWithState(item, false);
   }
 
-  return { cartItems, selectedItems, price, addItem, removeItem, selectItem, deselectItem }
+  const setQuantity = (newItem: CartItemType, isAdd: boolean) => {
+    if(!newItem.selected) 
+      return;
+    
+    const newQuantity: number = (newItem.quantity || 0) + (isAdd ? 1 : -1);
+
+    if(newQuantity <= 0)
+      return;
+    
+    const newCartItems = cartItems.map(cartItem =>
+      cartItem.id === newItem.id ?
+        {
+          ...cartItem,
+          quantity: newQuantity
+        }
+        :
+        cartItem
+    );
+    setPrice(price + (isAdd ? newItem.price : -newItem.price));
+    setCartItems(newCartItems);
+  }
+  const addQuantity = (item: CartItemType) => {
+    setQuantity(item, true);
+  }
+  const subsQuantity = (item: CartItemType) => {
+    setQuantity(item, false);
+  }
+
+  return {
+    cartItems,
+    price,
+    addItem,
+    removeItem,
+    selectItem,
+    deselectItem,
+    addQuantity,
+    subsQuantity,
+  }
 };
 
 export default useCart;
