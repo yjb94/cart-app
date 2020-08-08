@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { numberToPrice } from '../../utils';
 import useCart from '../../hooks/useCart';
 
+interface CartItemContainerType {
+  selected: boolean | undefined;
+}
+
 const CartItem: React.FC<{ cartItem: CartItemType }> = ({
   cartItem
 }) => {
@@ -15,6 +19,7 @@ const CartItem: React.FC<{ cartItem: CartItemType }> = ({
   return (
     <Container
       onClick={onClickItem}
+      selected={cartItem.selected}
     >
       <Image src={cartItem.coverImage} />
       <Title>
@@ -28,6 +33,7 @@ const CartItem: React.FC<{ cartItem: CartItemType }> = ({
 };
 
 const Container = styled.div`
+  border: ${(props: CartItemContainerType) => props.selected ? '1px solid red' : 'none'};
 `;
 
 const Title = styled.div`
