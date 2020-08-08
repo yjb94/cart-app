@@ -7,6 +7,7 @@ interface ProductType {
   availableCoupon?: boolean;
 }
 interface CartItemType extends ProductType {
+  quantity?: number;
   selected?: boolean;
 }
 
@@ -16,3 +17,5 @@ interface CouponType {
   discountAmount?: number;
   discountRate?: number;
 }
+
+type ClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
