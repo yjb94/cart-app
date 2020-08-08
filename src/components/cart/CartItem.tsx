@@ -1,18 +1,27 @@
 import React from 'react';
 import styled from "styled-components";
 import { numberToPrice } from '../../utils';
+import useCart from '../../hooks/useCart';
 
-const CartItem: React.FC<{ product: ProductType }> = ({
-  product
+const CartItem: React.FC<{ cartItem: CartItemType }> = ({
+  cartItem
 }) => {
+  const { selectItem, deselectItem } = useCart();
+
+  const onClickItem = () => {
+    cartItem.selected ? deselectItem(cartItem) : selectItem(cartItem);
+  }
+
   return (
-    <Container>
-      <Image src={product.coverImage} />
+    <Container
+      onClick={onClickItem}
+    >
+      <Image src={cartItem.coverImage} />
       <Title>
-        {product.title}
+        {cartItem.title}
       </Title>
       <Price>
-        {numberToPrice(product.price)}
+        {numberToPrice(cartItem.price)}
       </Price>
     </Container>
   )

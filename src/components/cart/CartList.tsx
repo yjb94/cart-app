@@ -8,10 +8,10 @@ const CartList: React.FC = () => {
 
   return (
     <Container>
-      {cartItems.map(product =>
+      {cartItems.map(cartItem =>
         <CartItem
-          key={product.id}
-          product={product}
+          key={cartItem.id}
+          cartItem={cartItem}
         />
       )}
     </Container>
