@@ -1,18 +1,38 @@
 import { useRecoilState } from 'recoil';
-import { cartItemsState, cartPriceState } from '../stores/cart';
+import { cartItemsState } from '../stores/cart';
 import { useEffect } from 'react';
+import { priceState, discountedPriceState } from '../stores/price';
+import useCoupon from './useCoupon';
+import { partition, calcItemsPrice } from '../utils';
 
 export const MAX_ITEM_COUNT = 3;
 export const MIN_QUANTITY = 1;
 
+
 const useCart = () => {
   const [cartItems, setCartItems] = useRecoilState<CartItemType[]>(cartItemsState);
-  const [price, setPrice] = useRecoilState<number>(cartPriceState);
+  const [price, setPrice] = useRecoilState<number>(priceState);
+  const [discountedPrice, setDiscountedPrice] = useRecoilState<number>(discountedPriceState);
+  const { selectedCoupon } = useCoupon();
 
   useEffect(() => {
-    const newPrice = cartItems.filter(t => t.selected).map(t => t.price * (t.quantity || MIN_QUANTITY)).reduce((a, b) => a + b, 0);
-    setPrice(newPrice);
-  }, [cartItems])
+    const selectedItems: CartItemType[] = cartItems.filter(t => t.selected);
+    const filteredItems = partition(selectedItems, (e) => e.availableCoupon !== false);
+    let availablePrice = calcItemsPrice(filteredItems.pass);   // discountable
+    const unavailablePrice =  calcItemsPrice(filteredItems.fail);  // not discountable
+    setPrice(Math.floor(availablePrice + unavailablePrice));
+
+    // set price for coupon type
+    if (selectedCoupon) {
+      if (selectedCoupon.type === 'rate') {
+        availablePrice *= (100 - (selectedCoupon.discountRate || 0)) / 100;
+      } else if (selectedCoupon.type === 'amount') {
+        availablePrice -= selectedCoupon.discountAmount || 0;
+      }
+    }
+
+    setDiscountedPrice(Math.floor(availablePrice + unavailablePrice));
+  }, [cartItems, setPrice, selectedCoupon, setDiscountedPrice])
 
   const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
@@ -86,6 +106,7 @@ const useCart = () => {
   return {
     cartItems,
     price,
+    discountedPrice,
     addItem,
     removeItem,
     selectItem,
@@ -96,5 +117,3 @@ const useCart = () => {
 };
 
 export default useCart;
-
-
