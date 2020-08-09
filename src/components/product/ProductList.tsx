@@ -1,47 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
 import ProductItem from './ProductItem';
 import { productState } from '../../stores/product';
-import { Button } from '../button/Button';
+import { Pagination } from 'antd';
 
 const LIMIT: number = 5;
-const DEFAULT_OFFSET: number = 0;
+const DEFAULT_PAGE: number = 1;
 
 const ProductList: React.FC = () => {
-  const [offset, setOffset] = useState<number>(DEFAULT_OFFSET);
-  const [limit] = useState<number>(LIMIT);
+  const [page, setPage] = useState<number>(DEFAULT_PAGE);
 
   const products = useRecoilValue(productState);
-  const maxOffset: number = products.length - LIMIT;
 
-  const onClickPaging = (dir: 1 | -1) => {
-    setOffset(Math.min(Math.max(0, offset + dir * limit), maxOffset));
+  const onChange = (page: number) => {
+    setPage(page);
   }
 
   return (
     <Container>
-      {products.slice(offset, offset + limit).map(product =>
+      {products.slice((page - 1) * LIMIT, page * LIMIT).map(product =>
         <ProductItem
           key={product.id}
           product={product}
         />
       )}
-      {DEFAULT_OFFSET < offset &&
-        <Button
-          onClick={() => onClickPaging(-1)}
-        >
-          {"<"}
-        </Button>
-      }
-
-      {offset < maxOffset &&
-        <Button
-          onClick={() => onClickPaging(1)}
-        >
-          {">"}
-        </Button>
-      }
+      <Pagination
+        current={page}
+        onChange={onChange}
+        defaultPageSize={LIMIT}
+        total={products.length}
+      />
     </Container>
   )
 };
