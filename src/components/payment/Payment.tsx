@@ -1,8 +1,11 @@
 import React from 'react';
-import styled from "styled-components";
 import useCart from '../../hooks/useCart';
-import { numberToPrice } from '../../utils';
 import { Button } from '../button/Button';
+import { Space } from 'antd';
+import strings from '../../strings/strings';
+import PaymentLabel from './PaymentLabel';
+import styled from 'styled-components';
+
 
 const Payment: React.FC = () => {
   const { price, discountedPrice } = useCart();
@@ -11,31 +14,39 @@ const Payment: React.FC = () => {
     // TODO: show purchased screen
   }
 
-  // TODO: show discounted price
+  const isDiscounted = price !== discountedPrice
 
   return (
     <Container>
-      <Price>
-        {numberToPrice(price)}
-      </Price>
-      <DiscountPrice>
-        할인된 금액: {numberToPrice(discountedPrice)}
-      </DiscountPrice>
-      <Button
-        onClick={onClickPayment}
-      >
-        결제
-      </Button>
+      <Space direction="vertical" align="end">
+        <PaymentLabel
+          label={strings["payment.totalPrice"]}
+          level={4}
+          type={'secondary'}
+          stroke={isDiscounted}
+          price={price}
+        />
+        <PaymentLabel
+          label={strings["payment.finalPrice"]}
+          price={discountedPrice}
+        />
+        <PayButton
+          onClick={onClickPayment}
+        >
+          {strings["payment.pay"]}
+        </PayButton>
+      </Space>
     </Container>
   )
 };
 
 const Container = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
-const Price = styled.div`
-`;
-const DiscountPrice = styled.div`
+const PayButton = styled(Button)`
+  margin-top: 16px;
 `;
 
 export default Payment;

@@ -5,6 +5,12 @@ const strings = {
   "product.removeItem": "빼기",
   
   "cart.title": "담아둔 상품",
+
+  "payment.totalPrice": "총액:",
+  "payment.finalPrice": "최종 결제 금액:",
+  "payment.pay": "결제",
+
+  "coupon.title": "쿠폰 목록",
 }
 
 export default strings;

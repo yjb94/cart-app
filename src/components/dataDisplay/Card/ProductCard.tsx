@@ -1,15 +1,11 @@
 import React from 'react';
 import useCart, { MAX_ITEM_COUNT } from '../../../hooks/useCart';
 import { Button } from '../../button/Button';
-import { ShoppingCartOutlined, ShoppingTwoTone } from '@ant-design/icons';
-import Card from './Card';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import strings from '../../../strings/strings';
+import ItemCard, { ItemCardProps } from './ItemCard';
 
-interface ProductCardProps {
-  product: ProductType;
-}
-
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCard: React.FC<ItemCardProps> = ({
   product,
 }) => {
   const { cartItems, addItem, removeItem } = useCart();
@@ -26,8 +22,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const isFull = cartItems.length >= MAX_ITEM_COUNT;
 
   return (
-    <Card
+    <ItemCard
       product={product}
+      selected={isInCart}
       accesory={isInCart ?
         <Button
           onClick={onClickRemoveItem}

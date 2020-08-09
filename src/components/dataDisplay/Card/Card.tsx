@@ -1,47 +1,34 @@
 import React, { ReactNode } from 'react';
-import styled from "styled-components";
-import { numberToPrice } from '../../../utils';
 import { Card as AntdCard } from 'antd';
 import colors from '../../../styles/colors';
+import { CardProps as AntdCardProps } from 'antd/lib/card';
+import styled from 'styled-components';
 import { CheckCircleTwoTone } from '@ant-design/icons';
-const { Meta } = AntdCard;
+
+export interface CardProps extends AntdCardProps {
+  selected?: boolean;
+  selectedAcc?: ReactNode;
+}
 
 const SELECTED_ACC_SIZE = 32;
 
-interface CardProps {
-  product: ProductType;
-  selected?: boolean;
-  selectedAcc?: ReactNode;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  accesory?: ReactNode;
-}
+const Card: React.FC<CardProps> = (props) => {
+  const {
+    style,
+    selected,
+    selectedAcc = <CheckCircleTwoTone />
+  } = props;
 
-const Card: React.FC<CardProps> = ({
-  product,
-  selected,
-  selectedAcc = <CheckCircleTwoTone />,
-  onClick,
-  accesory
-}) => {
   return (
     <AntdCard
+      {...props}
       hoverable
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
+        ...style,
         border: `1px solid ${selected ? colors.daybreakBlue : 'transparent'}`,
       }}
-      bodyStyle={{
-        paddingTop: 24,
-        height: "100%",
-        boxSizing: 'border-box'
-
-      }}
-      cover={<Image src={product.coverImage} />}
       bordered={false}
       size={'small'}
-      onClick={onClick}
     >
       <Container>
         {selected &&
@@ -49,36 +36,20 @@ const Card: React.FC<CardProps> = ({
             {selectedAcc}
           </SelectedAccContainer>
         }
-        <Meta
-          title={product.title}
-          description={numberToPrice(product.price)}
-        />
-        {accesory &&
-          <AccContainer>
-            {accesory}
-          </AccContainer>
-        }
+        {props.children}
       </Container>
     </AntdCard>
   )
 };
 
-const Image = styled.img`
-  height: 250px;
-  object-fit: cover;
-`;
 const Container = styled.div`
 `;
 const SelectedAccContainer = styled.div`
   position: absolute;
-  right: -${SELECTED_ACC_SIZE / 8 * 3}px;
-  top: -${SELECTED_ACC_SIZE / 5 * 3}px;
+  right: -${SELECTED_ACC_SIZE * 3 / 8}px;
+  top: -${SELECTED_ACC_SIZE * 7 / 10}px;
   font-size: ${SELECTED_ACC_SIZE}px;
   color: ${colors.daybreakBlue};
-`;
-const AccContainer = styled.div`
-  margin-top: 8px;
-  float: right;
 `;
 
 export default Card;

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from "styled-components";
-import Card from './Card';
 import useCart from '../../../hooks/useCart';
 import { Button } from '../../button/Button';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Space, Typography } from 'antd';
+import ItemCard from './ItemCard';
 const { Text } = Typography;
 
 const CartCard: React.FC<{ cartItem: CartItemType }> = ({
@@ -24,7 +24,7 @@ const CartCard: React.FC<{ cartItem: CartItemType }> = ({
   }
 
   return (
-    <Card
+    <ItemCard
       product={cartItem}
       onClick={onClickItem}
       selected={cartItem.selected}
