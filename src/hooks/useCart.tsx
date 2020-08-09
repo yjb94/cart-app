@@ -3,10 +3,11 @@ import { cartItemsState } from '../stores/cart';
 import { useEffect } from 'react';
 import { priceState, discountedPriceState } from '../stores/price';
 import useCoupon from './useCoupon';
-import { partition } from '../utils';
+import { partition, calcItemsPrice } from '../utils';
 
 export const MAX_ITEM_COUNT = 3;
 export const MIN_QUANTITY = 1;
+
 
 const useCart = () => {
   const [cartItems, setCartItems] = useRecoilState<CartItemType[]>(cartItemsState);
@@ -17,10 +18,11 @@ const useCart = () => {
   useEffect(() => {
     const selectedItems: CartItemType[] = cartItems.filter(t => t.selected);
     const filteredItems = partition(selectedItems, (e) => e.availableCoupon !== false);
-    let availablePrice = filteredItems.pass.map(t => t.price).reduce((a, b) => a + b, 0);
-    const unavailablePrice = filteredItems.fail.map(t => t.price).reduce((a, b) => a + b, 0);
+    let availablePrice = calcItemsPrice(filteredItems.pass);   // discountable
+    const unavailablePrice =  calcItemsPrice(filteredItems.fail);  // not discountable
     setPrice(Math.floor(availablePrice + unavailablePrice));
 
+    // set price for coupon type
     if (selectedCoupon) {
       if (selectedCoupon.type === 'rate') {
         availablePrice *= (100 - (selectedCoupon.discountRate || 0)) / 100;
