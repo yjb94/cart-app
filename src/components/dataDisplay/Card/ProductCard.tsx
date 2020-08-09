@@ -1,8 +1,9 @@
 import React from 'react';
-import useCart from '../../../hooks/useCart';
+import useCart, { MAX_ITEM_COUNT } from '../../../hooks/useCart';
 import { Button } from '../../button/Button';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, ShoppingTwoTone } from '@ant-design/icons';
 import Card from './Card';
+import strings from '../../../strings/strings';
 
 interface ProductCardProps {
   product: ProductType;
@@ -22,6 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   const isInCart = !!cartItems.find(t => t.id === product.id);
+  const isFull = cartItems.length >= MAX_ITEM_COUNT;
 
   return (
     <Card
@@ -29,16 +31,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
       accesory={isInCart ?
         <Button
           onClick={onClickRemoveItem}
+          icon={<ShoppingCartOutlined />}
         >
-          <ShoppingCartOutlined />
-          빼기
+          {strings["product.removeItem"]}
         </Button>
         :
         <Button
           onClick={onClickAddItem}
+          type={'primary'}
+          disabled={isFull}
+          icon={<ShoppingCartOutlined />}
         >
-          <ShoppingCartOutlined />
-          담기
+          {strings["product.addItem"]}
         </Button>
       }
     />

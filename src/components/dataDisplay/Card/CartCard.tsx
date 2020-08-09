@@ -27,6 +27,7 @@ const CartCard: React.FC<{ cartItem: CartItemType }> = ({
     <Card
       product={cartItem}
       onClick={onClickItem}
+      selected={cartItem.selected}
       accesory={cartItem.selected &&
         <AccContainer>
           <Button
