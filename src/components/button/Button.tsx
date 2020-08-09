@@ -1,17 +1,24 @@
 
-import React, { ButtonHTMLAttributes } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import { Button as AntdButton } from 'antd';
+import { ButtonProps } from 'antd/lib/button';
 
-export const Button: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  onClick,
-  children
-}) => {
+export const Button: React.FC<ButtonProps> = (props) => {
+  const _onClick = (e:ClickEvent) => {
+    if(props.onClick){
+      e.preventDefault && e.preventDefault();
+      e.stopPropagation && e.stopPropagation();
+      props.onClick(e);
+    }
+  }
+
   return (
     <Container
-      onClick={onClick}
+      {...props}
+      onClick={_onClick}
     >
-      {children}
+      {props.children}
     </Container>
   )
 }

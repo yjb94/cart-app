@@ -18,7 +18,7 @@ interface CouponType {
   discountRate?: number;
 }
 
-type ClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
 interface PartitionType<T> {
   pass: T[],

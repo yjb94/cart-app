@@ -44,7 +44,8 @@ const useCart = () => {
       ...cartItems,
       {
         ...item,
-        quantity: MIN_QUANTITY
+        quantity: MIN_QUANTITY,
+        selected: true
       },
     ]);
   }

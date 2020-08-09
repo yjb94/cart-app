@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
 import { productState } from '../../stores/product';
-import ProductCard from '../dataDisplay/ProductCard';
+import ProductCard from '../dataDisplay/Card/ProductCard';
 import { Pagination, Typography, Row, Col } from 'antd';
 const { Title, Text } = Typography;
 
