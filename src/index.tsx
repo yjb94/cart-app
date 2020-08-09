@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot, MutableSnapshot } from 'recoil';
-import { cartItemsState, cartPriceState } from './stores/cart';
+import { cartItemsState } from './stores/cart';
 import { MIN_QUANTITY } from './hooks/useCart';
+import { priceState } from './stores/price';
 
 
 const initializeState = (mutableSnapshot: MutableSnapshot) => {
@@ -14,7 +15,7 @@ const initializeState = (mutableSnapshot: MutableSnapshot) => {
   const selectedItems: CartItemType[] = cartItems.filter(t => t.selected);
 
   const price:number = selectedItems.map(t => t.price * (t.quantity || MIN_QUANTITY)).reduce((a, b) => a + b, 0);
-  mutableSnapshot.set(cartPriceState, price);
+  mutableSnapshot.set(priceState, price);
 };
 
 ReactDOM.render(

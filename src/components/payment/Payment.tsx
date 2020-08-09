@@ -4,7 +4,7 @@ import useCart from '../../hooks/useCart';
 import { numberToPrice } from '../../utils';
 
 const Payment: React.FC = () => {
-  const { price } = useCart();
+  const { price, discountedPrice } = useCart();
 
   const onClickPayment = () => {
     // TODO: show purchased screen
@@ -14,7 +14,12 @@ const Payment: React.FC = () => {
 
   return (
     <Container>
-      {numberToPrice(price)}
+      <Price>
+        {numberToPrice(price)}
+      </Price>
+      <DiscountPrice>
+        할인된 금액: {numberToPrice(discountedPrice)}
+      </DiscountPrice>
       <PaymentButton
         onClick={onClickPayment}
       >
@@ -25,6 +30,11 @@ const Payment: React.FC = () => {
 };
 
 const Container = styled.div`
+`;
+
+const Price = styled.div`
+`;
+const DiscountPrice = styled.div`
 `;
 
 const PaymentButton = styled.button`

@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from "styled-components";
-import { useRecoilValue } from 'recoil';
-import { couponState } from '../../stores/coupon';
 import CouponItem from './CouponItem';
+import useCoupon from '../../hooks/useCoupon';
 
 const CouponList: React.FC = () => {
-  const coupons = useRecoilValue(couponState);
+  const { coupons } = useCoupon();
 
   return (
     <Container>

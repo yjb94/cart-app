@@ -19,3 +19,8 @@ interface CouponType {
 }
 
 type ClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+
+interface PartitionType<T> {
+  pass: T[],
+  fail: T[]
+}

@@ -15,3 +15,8 @@ export const couponState = atom<CouponType[]>({
     }
   ]
 });
+
+export const couponSelectedState = atom<CouponType | null>({
+  key: 'couponSelectedState',
+  default: null
+});
