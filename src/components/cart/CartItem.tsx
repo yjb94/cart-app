@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import { numberToPrice } from '../../utils';
 import useCart from '../../hooks/useCart';
+import { Button } from '../button/Button';
 
 interface CartItemContainerType {
   selected: boolean | undefined;
@@ -77,8 +78,6 @@ const Image = styled.img`
 const QuantityContainer = styled.div`
 `;
 const Quantity = styled.div`
-`;
-const Button = styled.button`
 `;
 
 export default CartItem;

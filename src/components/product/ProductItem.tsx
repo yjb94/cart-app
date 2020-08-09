@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import { numberToPrice } from '../../utils';
 import useCart from '../../hooks/useCart';
+import { Button } from '../button/Button';
 
 const ProductItem: React.FC<{ product: ProductType }> = ({
   product
@@ -28,17 +29,17 @@ const ProductItem: React.FC<{ product: ProductType }> = ({
         {numberToPrice(product.price)}
       </Price>
       {isInCart ?
-        <CartButton
+        <Button
           onClick={onClickRemoveItem}
         >
           빼기
-        </CartButton>
+        </Button>
         :
-        <CartButton
+        <Button
           onClick={onClickAddItem}
         >
           담기
-        </CartButton>
+        </Button>
       }
     </Container>
   )
@@ -53,9 +54,6 @@ const Price = styled.div`
 `;
 const Image = styled.img`
   width: 490px;
-`;
-
-const CartButton = styled.button`
 `;
 
 export default ProductItem;

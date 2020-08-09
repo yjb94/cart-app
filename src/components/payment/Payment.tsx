@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import useCart from '../../hooks/useCart';
 import { numberToPrice } from '../../utils';
+import { Button } from '../button/Button';
 
 const Payment: React.FC = () => {
   const { price, discountedPrice } = useCart();
@@ -20,11 +21,11 @@ const Payment: React.FC = () => {
       <DiscountPrice>
         할인된 금액: {numberToPrice(discountedPrice)}
       </DiscountPrice>
-      <PaymentButton
+      <Button
         onClick={onClickPayment}
       >
         결제
-      </PaymentButton>
+      </Button>
     </Container>
   )
 };
@@ -35,9 +36,6 @@ const Container = styled.div`
 const Price = styled.div`
 `;
 const DiscountPrice = styled.div`
-`;
-
-const PaymentButton = styled.button`
 `;
 
 export default Payment;

@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
 import ProductItem from './ProductItem';
 import { productState } from '../../stores/product';
+import { Button } from '../button/Button';
 
 const LIMIT: number = 5;
 const DEFAULT_OFFSET: number = 0;
@@ -27,28 +28,25 @@ const ProductList: React.FC = () => {
         />
       )}
       {DEFAULT_OFFSET < offset &&
-        <Arrow
+        <Button
           onClick={() => onClickPaging(-1)}
         >
           {"<"}
-        </Arrow>
+        </Button>
       }
 
       {offset < maxOffset &&
-        <Arrow
+        <Button
           onClick={() => onClickPaging(1)}
         >
           {">"}
-        </Arrow>
+        </Button>
       }
     </Container>
   )
 };
 
 const Container = styled.div`
-`;
-
-const Arrow = styled.button`
 `;
 
 export default ProductList;
