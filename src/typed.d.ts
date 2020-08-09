@@ -6,3 +6,16 @@ interface ProductType {
   score: number;
   availableCoupon?: boolean;
 }
+interface CartItemType extends ProductType {
+  quantity?: number;
+  selected?: boolean;
+}
+
+interface CouponType {
+  type: 'rate' | 'amount';
+  title: string;
+  discountAmount?: number;
+  discountRate?: number;
+}
+
+type ClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;

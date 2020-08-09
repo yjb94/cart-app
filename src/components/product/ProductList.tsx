@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
-import { storeContext } from '../../context';
-import { useObserver } from 'mobx-react-lite';
 import ProductItem from './ProductItem';
+import { productState } from '../../stores/product';
 
 const LIMIT: number = 5;
 const DEFAULT_OFFSET: number = 0;
@@ -11,18 +11,16 @@ const ProductList: React.FC = () => {
   const [offset, setOffset] = useState<number>(DEFAULT_OFFSET);
   const [limit] = useState<number>(LIMIT);
 
-  const store = React.useContext(storeContext);
-  if (!store) throw Error("Store shouldn't be null");
-
-  const maxOffset = store.products.length - LIMIT;
+  const products = useRecoilValue(productState);
+  const maxOffset: number = products.length - LIMIT;
 
   const onClickPaging = (dir: 1 | -1) => {
     setOffset(Math.min(Math.max(0, offset + dir * limit), maxOffset));
   }
 
-  return useObserver(() =>
+  return (
     <Container>
-      {store.products.slice(offset, offset + limit).map(product =>
+      {products.slice(offset, offset + limit).map(product =>
         <ProductItem
           key={product.id}
           product={product}

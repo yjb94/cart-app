@@ -1,17 +1,22 @@
 import React from 'react';
 import styled from "styled-components";
 import { numberToPrice } from '../../utils';
+import useCart from '../../hooks/useCart';
 
 const ProductItem: React.FC<{ product: ProductType }> = ({
   product
 }) => {
-  const addItem = () => {
-    //TODO: add item from cart
+  const { cartItems, addItem, removeItem } = useCart();
+
+  const onClickAddItem = () => {
+    addItem(product);
   }
-  const removeItem = () => {
-    //TODO: remove item from cart
+  const onClickRemoveItem = () => {
+    removeItem(product);
   }
   //TODO: styling
+
+  const isInCart = !!cartItems.find(t => t.id === product.id);
 
   return (
     <Container>
@@ -22,16 +27,19 @@ const ProductItem: React.FC<{ product: ProductType }> = ({
       <Price>
         {numberToPrice(product.price)}
       </Price>
-      <CartButton
-        onClick={addItem}
-      >
-        담기
-      </CartButton>
-      <CartButton
-        onClick={removeItem}
-      >
-        빼기
-      </CartButton>
+      {isInCart ?
+        <CartButton
+          onClick={onClickRemoveItem}
+        >
+          빼기
+        </CartButton>
+        :
+        <CartButton
+          onClick={onClickAddItem}
+        >
+          담기
+        </CartButton>
+      }
     </Container>
   )
 };
