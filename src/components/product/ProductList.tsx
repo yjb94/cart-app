@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
-import ProductItem from './ProductItem';
 import { productState } from '../../stores/product';
 import { Pagination } from 'antd';
+import ProductCard from '../dataDisplay/ProductCard';
 
 const LIMIT: number = 5;
 const DEFAULT_PAGE: number = 1;
@@ -20,7 +20,7 @@ const ProductList: React.FC = () => {
   return (
     <Container>
       {products.slice((page - 1) * LIMIT, page * LIMIT).map(product =>
-        <ProductItem
+        <ProductCard
           key={product.id}
           product={product}
         />
