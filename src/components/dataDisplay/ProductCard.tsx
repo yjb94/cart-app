@@ -9,12 +9,10 @@ const { Meta } = Card;
 
 interface ProductCardProps {
   product: ProductType;
-  width?: number;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
-  width = 490
 }) => {
   const { cartItems, addItem, removeItem } = useCart();
 
@@ -30,11 +28,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Card
       hoverable
-      style={{ width }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%"
+      }}
+      bodyStyle={{
+        paddingTop: 24,
+      }}
       cover={<Image src={product.coverImage} />}
+      bordered={false}
+      size={'small'}
     >
       <Container>
-        <Meta title={product.title} description={numberToPrice(product.price)} />
+        <Meta
+          title={product.title}
+          description={numberToPrice(product.price)}
+        />
         <ButtonContainer>
           {isInCart ?
             <Button
@@ -58,6 +68,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 const Image = styled.img`
+  height: 250px;
+  object-fit: cover;
 `;
 const Container = styled.div`
 `;
