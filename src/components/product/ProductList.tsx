@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { productState } from '../../stores/product';
 import ProductCard from '../dataDisplay/Card/ProductCard';
 import { Pagination, Typography, Row, Col } from 'antd';
+import useModal from '../../hooks/useModal';
+import ProductModal from '../modal/ProductModal';
 const { Title, Text } = Typography;
 
 const LIMIT: number = 4;
@@ -14,11 +16,18 @@ const ProductList: React.FC<{ title?: string, subtitle?: string }> = ({
   subtitle
 }) => {
   const [page, setPage] = useState<number>(DEFAULT_PAGE);
+  const [selectedProduct, setSelectedProduct] = useState<ProductType>();
 
   const products = useRecoilValue(productState);
 
+  const { visible, openModal, closeModal } = useModal();
+
   const onChange = (page: number) => {
     setPage(page);
+  }
+  const selectProduct = (product: ProductType) => {
+    setSelectedProduct(product);
+    openModal();
   }
 
   return (
@@ -44,11 +53,14 @@ const ProductList: React.FC<{ title?: string, subtitle?: string }> = ({
           <Col
             sm={24}
             md={12}
-            lg={24/LIMIT}
+            lg={24 / LIMIT}
+            key={product.id}
           >
             <ProductCard
-              key={product.id}
               product={product}
+              onClick={() => { 
+                selectProduct(product)
+              }}
             />
           </Col>
         )}
@@ -61,6 +73,11 @@ const ProductList: React.FC<{ title?: string, subtitle?: string }> = ({
           total={products.length}
         />
       </PaginationContainer>
+      <ProductModal
+        visible={visible}
+        product={selectedProduct}
+        onRequestClose={closeModal}
+      />
     </Container>
   )
 };

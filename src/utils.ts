@@ -23,6 +23,10 @@ export const partition = <T>(array: T[], rule: (elem: T) => boolean): PartitionT
   });
 }
 
+export const calcItemPrice = (item:CartItemType ): number => {
+  return item.price * (item.quantity || MIN_QUANTITY);
+}
+
 export const calcItemsPrice = (items: CartItemType[]): number => {
-  return items.map(item => item.price * (item.quantity || MIN_QUANTITY)).reduce((a, b) => a + b, 0);
+  return items.map(calcItemPrice).reduce((a, b) => a + b, 0);
 }

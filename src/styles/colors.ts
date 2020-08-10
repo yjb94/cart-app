@@ -1,5 +1,7 @@
+import { blue } from '@ant-design/colors';
+
 const colors = {
-  daybreakBlue: '#1890ff'
+  daybreakBlue: blue.primary,
 }
 
 export default colors;

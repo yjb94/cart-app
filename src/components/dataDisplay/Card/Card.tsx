@@ -15,20 +15,23 @@ const SELECTED_ACC_SIZE = 32;
 const Card: React.FC<CardProps> = (props) => {
   const {
     style,
+    children,
     selected,
-    selectedAcc = <CheckCircleTwoTone />
+    selectedAcc = <CheckCircleTwoTone />,
+    size = 'small',
+    hoverable = true,
   } = props;
 
   return (
     <AntdCard
       {...props}
-      hoverable
+      hoverable={hoverable}
       style={{
         ...style,
         border: `1px solid ${selected ? colors.daybreakBlue : 'transparent'}`,
       }}
       bordered={false}
-      size={'small'}
+      size={size}
     >
       <Container>
         {selected &&
@@ -36,7 +39,7 @@ const Card: React.FC<CardProps> = (props) => {
             {selectedAcc}
           </SelectedAccContainer>
         }
-        {props.children}
+        {children}
       </Container>
     </AntdCard>
   )
