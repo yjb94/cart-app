@@ -18,9 +18,11 @@ const CartList: React.FC = () => {
       </Title>
       <Row gutter={[16, 16]}>
         {cartItems.map(cartItem =>
-          <Col span={6}>
+          <Col
+            key={cartItem.id}
+            span={6}
+          >
             <CartCard
-              key={cartItem.id}
               cartItem={cartItem}
             />
           </Col>

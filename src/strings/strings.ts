@@ -3,6 +3,7 @@ const strings = {
   "product.subtitle": "수제 공예 모음",
   "product.addItem": "담기",
   "product.removeItem": "빼기",
+  "product.discountable": "쿠폰 적용 가능",
   
   "cart.title": "담아둔 상품",
 

@@ -19,7 +19,7 @@ const useCart = () => {
     const selectedItems: CartItemType[] = cartItems.filter(t => t.selected);
     const filteredItems = partition(selectedItems, (e) => e.availableCoupon !== false);
     let availablePrice = calcItemsPrice(filteredItems.pass);   // discountable
-    const unavailablePrice =  calcItemsPrice(filteredItems.fail);  // not discountable
+    const unavailablePrice = calcItemsPrice(filteredItems.fail);  // not discountable
     setPrice(Math.floor(availablePrice + unavailablePrice));
 
     // set price for coupon type
@@ -104,6 +104,13 @@ const useCart = () => {
     setQuantity(item, false);
   }
 
+  const isInCart = (item: ProductType): boolean => {
+    return !!cartItems.find(t => t.id === item.id);
+  }
+  const isFull = (): boolean => {
+    return cartItems.length >= MAX_ITEM_COUNT;
+  }
+
   return {
     cartItems,
     price,
@@ -114,6 +121,8 @@ const useCart = () => {
     deselectItem,
     addQuantity,
     subsQuantity,
+    isInCart,
+    isFull
   }
 };
 
