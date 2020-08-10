@@ -5,16 +5,19 @@ import { Space } from 'antd';
 import strings from '../../strings/strings';
 import PaymentLabel from './PaymentLabel';
 import styled from 'styled-components';
+import useModal from '../../hooks/useModal';
+import PaymentModal from '../modal/PaymentModal';
 
 
 const Payment: React.FC = () => {
   const { price, discountedPrice } = useCart();
+  const { visible, openModal, closeModal } = useModal();
 
   const onClickPayment = () => {
-    // TODO: show purchased screen
+    openModal();
   }
 
-  const isDiscounted = price !== discountedPrice
+  const isDiscounted = price !== discountedPrice;
 
   return (
     <Container>
@@ -36,6 +39,12 @@ const Payment: React.FC = () => {
           {strings["payment.pay"]}
         </PayButton>
       </Space>
+      <PaymentModal
+        visible={visible}
+        onRequestClose={closeModal}
+      >
+
+      </PaymentModal>
     </Container>
   )
 };

@@ -3,7 +3,7 @@ import { Modal as AntdModal } from 'antd';
 import { ModalProps as AntdModalProps } from 'antd/lib/modal';
 
 export interface ModalProps extends AntdModalProps {
-  onRequestClose?: (e: React.MouseEvent<HTMLElement>) => void
+  onRequestClose?: (e: React.MouseEvent<HTMLElement> | undefined) => void
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
