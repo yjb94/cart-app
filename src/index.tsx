@@ -6,7 +6,7 @@ import { RecoilRoot, MutableSnapshot } from 'recoil';
 import { cartItemsState } from './stores/cart';
 import { priceState } from './stores/price';
 import { calcItemsPrice } from './utils';
-
+import 'antd/dist/antd.css';
 
 const initializeState = (mutableSnapshot: MutableSnapshot) => {
   const cartItems: CartItemType[] = JSON.parse(localStorage.getItem('cartItems') || '[]');

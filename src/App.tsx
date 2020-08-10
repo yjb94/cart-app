@@ -6,6 +6,8 @@ import Products from './pages/Products';
 import Cart from './pages/Cart';
 import { useRecoilTransactionObserver_UNSTABLE } from 'recoil';
 import { cartItemsState } from './stores/cart';
+import { Layout } from 'antd';
+const { Content } = Layout;
 
 const App: React.FC = () => {
   useRecoilTransactionObserver_UNSTABLE(({ snapshot }) => {
@@ -24,9 +26,7 @@ const App: React.FC = () => {
   )
 };
 
-const AppContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
+const AppContainer = styled(Content)`
 `;
 
 export default App;

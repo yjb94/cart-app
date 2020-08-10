@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { priceState, discountedPriceState } from '../stores/price';
 import useCoupon from './useCoupon';
 import { partition, calcItemsPrice } from '../utils';
+import { notification } from 'antd';
+import strings from '../strings/strings';
 
 export const MAX_ITEM_COUNT = 3;
 export const MIN_QUANTITY = 1;
@@ -19,7 +21,7 @@ const useCart = () => {
     const selectedItems: CartItemType[] = cartItems.filter(t => t.selected);
     const filteredItems = partition(selectedItems, (e) => e.availableCoupon !== false);
     let availablePrice = calcItemsPrice(filteredItems.pass);   // discountable
-    const unavailablePrice =  calcItemsPrice(filteredItems.fail);  // not discountable
+    const unavailablePrice = calcItemsPrice(filteredItems.fail);  // not discountable
     setPrice(Math.floor(availablePrice + unavailablePrice));
 
     // set price for coupon type
@@ -31,26 +33,36 @@ const useCart = () => {
       }
     }
 
-    setDiscountedPrice(Math.floor(availablePrice + unavailablePrice));
+    setDiscountedPrice(Math.max(Math.floor(availablePrice + unavailablePrice), 0));
   }, [cartItems, setPrice, selectedCoupon, setDiscountedPrice])
 
   const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
-      //TODO: error handling
+      notification.error({
+        message: strings["error.cartOverflow"],
+      });
       return;
     }
+    notification.success({
+      message: strings["cart.addSuccess"],
+    });
 
     setCartItems([
       ...cartItems,
       {
         ...item,
-        quantity: MIN_QUANTITY
+        quantity: MIN_QUANTITY,
+        selected: true
       },
     ]);
   }
 
   const removeItem = (item: CartItemType) => {
     setCartItems(cartItems.filter(t => t.id !== item.id));
+
+    notification.info({
+      message: strings["cart.removeSuccess"],
+    });
   }
 
   const selectItemWithState = (newItem: CartItemType, selected: boolean) => {
@@ -103,6 +115,13 @@ const useCart = () => {
     setQuantity(item, false);
   }
 
+  const isInCart = (item: ProductType): boolean => {
+    return !!cartItems.find(t => t.id === item.id);
+  }
+  const isFull = (): boolean => {
+    return cartItems.length >= MAX_ITEM_COUNT;
+  }
+
   return {
     cartItems,
     price,
@@ -113,6 +132,8 @@ const useCart = () => {
     deselectItem,
     addQuantity,
     subsQuantity,
+    isInCart,
+    isFull
   }
 };
 
