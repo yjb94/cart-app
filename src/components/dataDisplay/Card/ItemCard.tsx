@@ -9,12 +9,14 @@ const { Meta } = AntdCard;
 export interface ItemCardProps extends CardProps {
   product: ProductType;
   accesory?: ReactNode;
+  removeCover?: boolean;
 }
 
 const ItemCard: React.FC<ItemCardProps> = (props) => {
   const { 
     product,
-    accesory
+    accesory,
+    removeCover = false
   } = props;
 
   return (
@@ -30,7 +32,7 @@ const ItemCard: React.FC<ItemCardProps> = (props) => {
         height: "100%",
         boxSizing: 'border-box'
       }}
-      cover={<Image src={product.coverImage} />}
+      cover={removeCover ? null : <Image src={product.coverImage} />}
     >
       <Container>
         <Meta

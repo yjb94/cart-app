@@ -5,12 +5,15 @@ import { Button } from '../../button/Button';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Space, Typography } from 'antd';
 import ItemCard from './ItemCard';
+import useWindowDimensions from '../../../hooks/useWindowDimensions';
+
 const { Text } = Typography;
 
 const CartCard: React.FC<{ cartItem: CartItemType }> = ({
   cartItem
 }) => {
   const { selectItem, deselectItem, addQuantity, subsQuantity } = useCart();
+  const { width } = useWindowDimensions();
 
   const onClickItem = () => {
     cartItem.selected ? deselectItem(cartItem) : selectItem(cartItem);
@@ -28,6 +31,7 @@ const CartCard: React.FC<{ cartItem: CartItemType }> = ({
       product={cartItem}
       onClick={onClickItem}
       selected={cartItem.selected}
+      removeCover={width < 576}
       accesory={cartItem.selected &&
         <AccContainer>
           <Button

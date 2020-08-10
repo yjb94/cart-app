@@ -11,10 +11,16 @@ const Cart: React.FC = () => {
       <CartList />
       <Divider />
       <Row>
-        <Col span={12}>
+        <Col
+          xs={24}
+          sm={12}
+        >
           <CouponList />
         </Col>
-        <Col span={12}>
+        <Col 
+          xs={24}
+          sm={12}
+        >
           <Payment />
         </Col>
       </Row>
