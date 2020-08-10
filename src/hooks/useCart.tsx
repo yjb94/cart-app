@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { priceState, discountedPriceState } from '../stores/price';
 import useCoupon from './useCoupon';
 import { partition, calcItemsPrice } from '../utils';
+import { notification } from 'antd';
+import strings from '../strings/strings';
 
 export const MAX_ITEM_COUNT = 3;
 export const MIN_QUANTITY = 1;
@@ -36,9 +38,14 @@ const useCart = () => {
 
   const addItem = (item: CartItemType) => {
     if (cartItems.length >= MAX_ITEM_COUNT) {
-      //TODO: error handling
+      notification.error({
+        message: strings["error.cartOverflow"],
+      });
       return;
     }
+    notification.success({
+      message: strings["cart.addSuccess"],
+    });
 
     setCartItems([
       ...cartItems,
@@ -52,6 +59,10 @@ const useCart = () => {
 
   const removeItem = (item: CartItemType) => {
     setCartItems(cartItems.filter(t => t.id !== item.id));
+
+    notification.info({
+      message: strings["cart.removeSuccess"],
+    });
   }
 
   const selectItemWithState = (newItem: CartItemType, selected: boolean) => {

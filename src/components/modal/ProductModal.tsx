@@ -83,9 +83,5 @@ const Price = styled(Text)`
 const Discountable = styled(Text)`
   align-self: flex-end;
 `;
-const AccContainer = styled.div`
-  margin-top: 8px;
-  float: right;
-`;
 
 export default ProductModal;

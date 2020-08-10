@@ -9,7 +9,6 @@ const ProductCard: React.FC<ItemCardProps> = (props) => {
   const { product } = props;
   const { isInCart, isFull, addItem, removeItem } = useCart();
 
-  // TODO: alert or action after adding, deleting item
   const onClickAddItem = () => {
     addItem(product);
   }
