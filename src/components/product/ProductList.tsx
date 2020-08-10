@@ -1,54 +1,76 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from "styled-components";
-import ProductItem from './ProductItem';
 import { productState } from '../../stores/product';
+import ProductCard from '../dataDisplay/Card/ProductCard';
+import { Pagination, Typography, Row, Col } from 'antd';
+const { Title, Text } = Typography;
 
-const LIMIT: number = 5;
-const DEFAULT_OFFSET: number = 0;
+const LIMIT: number = 4;
+const DEFAULT_PAGE: number = 1;
 
-const ProductList: React.FC = () => {
-  const [offset, setOffset] = useState<number>(DEFAULT_OFFSET);
-  const [limit] = useState<number>(LIMIT);
+const ProductList: React.FC<{ title?: string, subtitle?: string }> = ({
+  title,
+  subtitle
+}) => {
+  const [page, setPage] = useState<number>(DEFAULT_PAGE);
 
   const products = useRecoilValue(productState);
-  const maxOffset: number = products.length - LIMIT;
 
-  const onClickPaging = (dir: 1 | -1) => {
-    setOffset(Math.min(Math.max(0, offset + dir * limit), maxOffset));
+  const onChange = (page: number) => {
+    setPage(page);
   }
 
   return (
     <Container>
-      {products.slice(offset, offset + limit).map(product =>
-        <ProductItem
-          key={product.id}
-          product={product}
+      <Title
+        level={3}
+        style={{
+          marginBottom: 2
+        }}
+      >
+        {title}
+      </Title>
+      <Text
+        type="secondary"
+        style={{
+          marginBottom: 16
+        }}
+      >
+        {subtitle}
+      </Text>
+      <Row gutter={[24, 24]}>
+        {products.slice((page - 1) * LIMIT, page * LIMIT).map(product =>
+          <Col
+            sm={24}
+            md={12}
+            lg={24/LIMIT}
+          >
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
+          </Col>
+        )}
+      </Row>
+      <PaginationContainer>
+        <Pagination
+          current={page}
+          onChange={onChange}
+          defaultPageSize={LIMIT}
+          total={products.length}
         />
-      )}
-      {DEFAULT_OFFSET < offset &&
-        <Arrow
-          onClick={() => onClickPaging(-1)}
-        >
-          {"<"}
-        </Arrow>
-      }
-
-      {offset < maxOffset &&
-        <Arrow
-          onClick={() => onClickPaging(1)}
-        >
-          {">"}
-        </Arrow>
-      }
+      </PaginationContainer>
     </Container>
   )
 };
 
 const Container = styled.div`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
 `;
-
-const Arrow = styled.button`
+const PaginationContainer = styled.div`
 `;
 
 export default ProductList;

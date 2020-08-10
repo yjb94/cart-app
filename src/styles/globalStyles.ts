@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
-  body {
-    margin: 0;
+  .ant-card-cover {
+    flex: 1;
   }
 `

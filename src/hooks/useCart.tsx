@@ -31,7 +31,7 @@ const useCart = () => {
       }
     }
 
-    setDiscountedPrice(Math.floor(availablePrice + unavailablePrice));
+    setDiscountedPrice(Math.max(Math.floor(availablePrice + unavailablePrice), 0));
   }, [cartItems, setPrice, selectedCoupon, setDiscountedPrice])
 
   const addItem = (item: CartItemType) => {
@@ -44,7 +44,8 @@ const useCart = () => {
       ...cartItems,
       {
         ...item,
-        quantity: MIN_QUANTITY
+        quantity: MIN_QUANTITY,
+        selected: true
       },
     ]);
   }
