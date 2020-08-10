@@ -45,6 +45,7 @@ const useCart = () => {
     }
     notification.success({
       message: strings["cart.addSuccess"],
+      description: item.title
     });
 
     setCartItems([
@@ -62,6 +63,7 @@ const useCart = () => {
 
     notification.info({
       message: strings["cart.removeSuccess"],
+      description: item.title
     });
   }
 
