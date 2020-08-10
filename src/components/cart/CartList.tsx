@@ -31,7 +31,6 @@ const CartList: React.FC = () => {
 };
 
 const Container = styled.div`
-  padding: 16px;
   display: flex;
   flex-direction: column;
 `;
