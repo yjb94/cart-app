@@ -1,6 +1,4 @@
-import React, { ReactNode } from 'react';
-import styled from "styled-components";
-import { numberToPrice } from '../../../utils';
+import React from 'react';
 import { Card as AntdCard } from 'antd';
 import { BarcodeOutlined } from '@ant-design/icons';
 import Card, { CardProps } from './Card';
