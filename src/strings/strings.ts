@@ -1,6 +1,9 @@
 const strings = {
   "global.cancel": "취소",
 
+  "route.product": "상품 목록",
+  "route.cart": "장바구니",
+
   "product.title": "내 손으로 만드는 작품",
   "product.subtitle": "수제 공예 모음",
   "product.addItem": "담기",
