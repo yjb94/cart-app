@@ -1,11 +1,12 @@
 import { MIN_QUANTITY } from "./hooks/useCart";
+import strings from "./strings/strings";
 
 export const numberWithCommas = (x: number): string => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export const numberToPrice = (x: number): string => {
-  return `${numberWithCommas(x)}원`;
+  return `${numberWithCommas(x)}${strings["global.won"]}`;
 }
 
 export const partition = <T>(array: T[], rule: (elem: T) => boolean): PartitionType<T> => {

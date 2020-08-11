@@ -90,5 +90,5 @@ export const productState = atom<ProductType[]>({
       price: 230000,
       score: 220,
     }
-  ]
+  ].sort((a, b) => a.score < b.score ? 1 : -1)
 });
