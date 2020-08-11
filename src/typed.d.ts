@@ -24,3 +24,9 @@ interface PartitionType<T> {
   pass: T[],
   fail: T[]
 }
+
+interface RouteType {
+  path: string;
+  component: React.FC;
+  name: string;
+}

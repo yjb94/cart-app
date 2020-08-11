@@ -1,17 +1,18 @@
 import React from 'react';
 import useCart from '../../hooks/useCart';
 import { Button } from '../button/Button';
-import { Space } from 'antd';
+import { Space, Popover } from 'antd';
 import strings from '../../strings/strings';
 import PaymentLabel from './PaymentLabel';
 import styled from 'styled-components';
 import useModal from '../../hooks/useModal';
 import PaymentModal from '../modal/PaymentModal';
-
+import useCoupon from '../../hooks/useCoupon';
 
 const Payment: React.FC = () => {
   const { price, discountedPrice } = useCart();
   const { visible, openModal, closeModal } = useModal();
+  const { selectedCoupon } = useCoupon();
 
   const onClickPayment = () => {
     openModal();
@@ -22,13 +23,20 @@ const Payment: React.FC = () => {
   return (
     <Container>
       <Space direction="vertical" align="end">
-        <PaymentLabel
-          label={strings["payment.totalPrice"]}
-          level={4}
-          type={'secondary'}
-          stroke={isDiscounted}
-          price={price}
-        />
+        <Popover
+          content={strings["payment.couponAvailable"]}
+          visible={!selectedCoupon}
+          trigger="hover"
+          placement="topRight"
+        >
+          <PaymentLabel
+            label={strings["payment.totalPrice"]}
+            level={4}
+            type={'secondary'}
+            stroke={isDiscounted}
+            price={price}
+          />
+        </Popover>
         <PaymentLabel
           label={strings["payment.finalPrice"]}
           price={discountedPrice}

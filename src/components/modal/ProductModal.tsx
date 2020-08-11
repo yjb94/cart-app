@@ -5,6 +5,7 @@ import { Typography } from 'antd';
 import { numberToPrice } from '../../utils';
 import strings from '../../strings/strings';
 import useCart from '../../hooks/useCart';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 const { Text } = Typography
 
 export interface ProductModalProps extends ModalProps {
@@ -32,6 +33,7 @@ const ProductModal: React.FC<ProductModalProps> = (props) => {
       okText={selected ? strings["product.removeItem"] : strings["product.addItem"]}
       okType={selected ? 'default' : 'primary'}
       okButtonProps={{
+        icon: <ShoppingCartOutlined />,
         disabled: !selected && isFull()
       }}
       onOk={onClickOk}

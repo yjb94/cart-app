@@ -20,7 +20,9 @@ const CartList: React.FC = () => {
         {cartItems.map(cartItem =>
           <Col
             key={cartItem.id}
-            span={6}
+            xs={24}
+            sm={12}
+            md={6}
           >
             <CartCard
               cartItem={cartItem}
