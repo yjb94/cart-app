@@ -1,44 +1,97 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to run
 
-## Available Scripts
+`npm run start`
 
-In the project directory, you can run:
+해당 command를 입력하면<br />
+[http://localhost:3001](http://localhost:3001) 에서 어플리케이션이 실행됩니다.
 
-### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Stacks
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+Framework: React.js
+Language: TypeScript
+State management: Recoil.js
+Routing: react-router-dom
+Styling: styled-component / Ant design
+```
 
-### `yarn test`
+## Details
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 네비게이션
 
-### `yarn build`
+- 상단에 네비게이션을 둬 페이지 이동에 사용합니다.
+- 현재 위치한 곳의 버튼에 검은색으로 표시합니다.
+- 페이지 주소가 올바르지 않을 경우 `/products`페이지로 이동합니다.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br/>
+<br/>
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### 상품 목록 페이지
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**요구사항**
+- **상품 목록 페이지** (route: `/products`)를 구현합니다
+    - 각 상품은 가격과 사진, 상품 제목을 표시합니다
+    - 상품의 score를 기준으로 내림차순으로 정렬하여 5개씩 보여주는 페이지네이션을 구현합니다
+    - 각 상품에는 장바구니 버튼이 있습니다
+        - 상품이 장바구니에 담겨 있지 않은 경우 - `담기` 버튼을 구현합니다
+        - 상품이 장바구니에 담겨 있는 경우 - `빼기` 버튼을 구현합니다
 
-### `yarn eject`
+**구현내용**
+- 각 상품의 가격, 사진, 상품 제목을 표시하는 카드를 구현했습니다.
+  - 상품을 클릭하게 되면 상세보기를 할 수 있습니다.
+- 상품을 score 기준으로 내림차순 정렬하여 **4**개씩 보여주는 페이지네이션을 구현했습니다.
+  - 5개에서 4개로 바꾼 이유는 총 12개의 데이터이고, Grid 환경에서 5개를 화면에 표시하기보다는 4개가 더 깔끔해서 임의로 변경하였습니다. 무한 스크롤 등의 방법으로 해결할 수 있었으나 pagination을 구현하는 것 자체가 과제에 포함된 것이라고 생각해서 4개로 변경하였습니다.
+  - pagination은 첫 페이지와 끝 페이지에서 좌우로 이동할 수 없는 경우 disable 됩니다.
+- 각 상품에는 장바구니 버튼이 있습니다.
+  - 상품의 `담기` 버튼을 클릭하게 되면 상품이 선택된 상태로 변경됩니다.
+  - 상품의 `담기` 버튼은 primary, `빼기` 버튼은 secondary로 지정하여 담고싶게끔 구현했습니다.
+  - 상품을 담거나 빼게 되면 우측에 알림을 출력합니다.
+    - 알림에는 상품 정보와 action에 대한 설명이 출력됩니다.
+  - 장바구니가 가득 찬(3개 이상) 경우에는 `담기` 버튼이 disable됩니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<br/>
+<br/>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 장바구니 페이지
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**요구사항**
+- **장바구니 페이지** (route: /cart)
+    - 장바구니에는 최대 3개의 상품이 담길 수 있습니다
+    - 장바구니의 상품 중 결제에 포함할 상품을 체크박스 등의 UI로 선택할 수 있습니다
+    - 장바구니에 담긴 각 상품의 수량을 선택할 수 있습니다
+      - 단, 최소 1개의 수량이 지정되어야 합니다
+    - 장바구니에 담긴 전체 상품의 최종 결제 금액에 대하여 쿠폰을 적용할 수 있습니다
+        - 쿠폰(coupon)은 두 가지 type을 가지고 있습니다
+          1. 정액 할인(amount) - `{discountAmount}원` 만큼 할인합니다
+          2. 비율 할인(rate) - `{discountRate}%` 만큼 할인합니다
+        - 상품 중에는 쿠폰 사용이 불가능한 상품(`availableCoupon == false`)이 존재합니다
+          - 이 상품들은 쿠폰 할인 계산에서 제외합니다.
+    - 최종 결제 금액을 장바구니 페이지 하단에 보여주세요
+      - 소수점 가격이 생긴다면 버림 처리 합니다
 
-## Learn More
+**구현내용**
+- 각 상품의 가격, 사진, 상품 제목을 표시하는 카드를 구현했습니다.
+- 장바구니에는 최대 3개의 상품이 담길 수 있습니다
+  - 3개가 되면 상품 목록 페이지에서 담기 버튼이 비활성화되며, 만약 이를 뚫고 담기를 시도하여도 오류메시지를 출력하게 됩니다.
+- 장바구니의 상품 중 결제에 포함할 상품을 체크박스 등의 UI로 선택할 수 있습니다.
+  - default로 장바구니에 담기면 선택되어 있으며, 장바구니의 상품 카드을 클릭하게 되면 toggle됩니다.
+- 장바구니에 담긴 각 상품의 수량을 선택할 수 있습니다.
+  - 최소 1개의 수량을 지정해야하며, 제한은 없습니다.
+  - 상품이 결제에 포함될 상품으로 선택되지 않은 경우 수량 지정이 불가능합니다.
+  - `+/-` 버튼으로 수량을 지정가능합니다.
+- 쿠폰 목록이 출력됩니다.
+  - 기본적으로 쿠폰은 선택되어있지 않습니다.
+  - 쿠폰을 선택하게되면 쿠폰이 선택된 상태로 지정됩니다.
+  - 쿠폰 목록에서 쿠폰 선택은 toggle이 가능한 radio button의 형태입니다.
+  - 쿠폰이 선택되지 않은 경우, 결제 금액에 `쿠폰을 적용할 수 있어요`라고 안내하는 popover를 출력합니다.
+  - 쿠폰을 적용하면 총액이 지워지며 최종 결제 금액이 표시됩니다.
+- 최종 결제 금액 및 총액이 표시됩니다.
+  - 쿠폰이 적용되기 전과 후의 금액을 모두 표시합니다.
+- 결제 영수증을 표시합니다.
+  - 결제 버튼을 누르면 주문 내역(각 상품명과 수량, 그리고 금액)과 금액에 대한 상세 정보(총 주문 금액, 할인 금액, 최종 결제 금액)를 출력합니다.
+  - 결제에 대한 약관을 동의하면 결제 버튼이 활성화됩니다.
+  - 결제를 클릭하면 5초간 기다리며 랜덤하게 결과가 알림으로 표시됩니다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 감사합니다.
