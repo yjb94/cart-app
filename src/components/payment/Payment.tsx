@@ -9,7 +9,6 @@ import useModal from '../../hooks/useModal';
 import PaymentModal from '../modal/PaymentModal';
 import useCoupon from '../../hooks/useCoupon';
 
-
 const Payment: React.FC = () => {
   const { price, discountedPrice } = useCart();
   const { visible, openModal, closeModal } = useModal();
@@ -25,7 +24,7 @@ const Payment: React.FC = () => {
     <Container>
       <Space direction="vertical" align="end">
         <Popover
-          content={"쿠폰을 적용할 수 있어요!"}
+          content={strings["payment.couponAvailable"]}
           visible={!selectedCoupon}
           trigger="hover"
           placement="topRight"

@@ -6,6 +6,7 @@ import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Space, Typography } from 'antd';
 import ItemCard from './ItemCard';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
+import strings from '../../../strings/strings';
 
 const { Text } = Typography;
 
@@ -40,7 +41,7 @@ const CartCard: React.FC<{ cartItem: CartItemType }> = ({
             icon={<MinusOutlined />}
           />
           <Text>
-            {cartItem.quantity}개
+            {cartItem.quantity}{strings["global.count"]}
           </Text>
           <Button
             onClick={onClickAdd}
